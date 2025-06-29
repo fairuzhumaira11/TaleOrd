@@ -1,0 +1,239 @@
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>TaleOrd</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/beige.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+	</head>
+	<body >
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<p style="font-family: Times New Roman; color: rgb(53, 2, 2); font-size: 80px;"><b>TaleOrd</b></p>
+					<p style="font-family: Times New Roman; font-style:italic; font-size: 55px;"><b>The Ultimate Book Guide</b></p>
+				</section>
+				<section>
+				  <section  data-auto-animate>
+					<h3 style="font-family: Times New Roman; color: rgb(53, 2, 2); font-size: 70px;"><b>Table Of Contents</b></h3>
+				  </section>
+				  <section  data-auto-animate>
+					<h3 style="font-family: Times New Roman; color: rgb(53, 2, 2); font-size: 70px;"><b>Table Of Contents</b></h3>
+					<h4 style="font-family: Times New Roman; color: rgb(128, 76, 8); font-size: 30px; line-height: 1.5;">
+						<ul>
+							<li class="fragment">About</li>
+							<li class="fragment">Tech Stack </li>
+							<li class="fragment">Features</li>
+							<li class="fragment">Codes</li>
+							<li class="fragment">Web Application</li>
+							<li class="fragment">Future Implimentations</li>
+							<li class="fragment">Conclusion</li>
+						</ul>
+					</h4>
+				  </section>
+				  <section data-auto-animate>
+					<h3 style="font-family: Times New Roman; color: rgb(128, 76, 8);"><b>About TaleOrd</b></h3>
+				  </section>
+				  <section data-auto-animate>
+					<h3 style="font-family: Times New Roman; color: rgb(53, 2, 2);"><b>About TaleOrd</b></h3>
+					<h5 style="font-family: Times New Roman; color: rgb(128, 76, 8); font-style: italic; font-size: 40px;"><b>Taleord is your intelligent book companion,<br>
+						                                                                                                      designed to craft personalized reading journeys<br>
+																															  based on your unique taste.<br>
+																															  Just share the details of a book you love, and<br>
+																															  Taleord curates a tailored list of recommendations—by<br>
+																															  genre, author, theme, and ratings.</b></h5>
+				  </section>
+				  <section  data-auto-animate>
+					<h3 style="font-family: Times New Roman; color: rgb(53, 2, 2); font-size: 70px;"><b>Tech Stacks</b></h3>
+				  </section>
+				  <section  data-auto-animate>
+					<h3 style="font-family: Times New Roman; color: rgb(53, 2, 2); font-size: 70px;"><b>Tech Stacks</b></h3>
+					<h4 style="font-family: Times New Roman; color: rgb(128, 76, 8); font-size: 30px; line-height: 1.5;">
+						<ul>
+							<li class="fragment">Frontend -> Gradio \(specialized for ML Models\)</li>
+							<li class="fragment">Frontend + Backend  -> Huggingface.co</li>
+							<li class="fragment">Dataset  -> Sourced from Kaggle</li>
+							<li class="fragment">Codes    -> Jupyter Notebook</li>
+							<li class="fragment">Language -> Python</li>
+						</ul>
+					</h4>
+				  </section>
+				  <section  data-auto-animate>
+					<h3 style="font-family: Times New Roman; color: rgb(53, 2, 2); font-size: 70px;"><b>Features</b></h3>
+				  </section>
+				   <section  data-auto-animate>
+					<h3 style="font-family: Times New Roman; color: rgb(53, 2, 2); font-size: 70px;"><b>Features</b></h3>
+					<h4 style="font-family: Times New Roman; color: rgb(128, 76, 8); font-size: 30px; line-height: 1.5;">
+						<ol>
+							<li class="fragment"><b>Personalized Book Recommendations</b> —<br> Input a favourite book or genre and recieve a list of top 5 books</li>
+							<li class="fragment"><b>Accuracy</b> — Data is found based on title, author, genres .<br>So accuracy is maintained.</li>
+							<li class="fragment"><b>Chatbot Style UI</b></li>
+						</ol>
+					</h4>
+				   </section>
+				  <section  data-auto-animate>
+					<h3 style="font-family: Times New Roman; color: rgb(53, 2, 2); font-size: 70px;"><b>Codes</b></h3>
+				  </section>
+				  <section  data-auto-animate>
+					<h3 style="font-family: Times New Roman; color: rgb(53, 2, 2); font-size: 70px;"><b>Codes</b></h3>
+					<h4 style="font-family: Times New Roman; color: rgb(128, 76, 8); font-size: 30px; line-height: 1.5;">
+						<pre><code data-trim data-noescape>
+							def recommend(input, top_n=5):
+									input_vect = vector.transform([input])
+
+									similarity_score = cosine_similarity(input_vect, vector_matrix).flatten()
+
+									# Creating a DataFrame combining book info and similarity scores
+									score_df = pd.DataFrame({
+										'title': books['title'],
+										'author': books['author'],
+										'genres': books['genres'],
+										'avg_rating': books['avg_rating'],
+										'ratings_count': books['num_ratings'],
+										'similarity_score': similarity_score
+									})
+
+									# Removing the books exactly matching the input title (to avoid recommending the same book)
+									score_df = score_df[~score_df['title'].str.lower().eq(input.lower())]
+
+									# Converting rating columns to numeric types 
+									score_df['avg_rating'] = pd.to_numeric(score_df['avg_rating'], errors='coerce')
+									score_df['ratings_count'] = pd.to_numeric(score_df['ratings_count'], errors='coerce')
+
+									score_df.fillna(0, inplace=True)
+
+									# Normalizing 
+									score_df['ratings_count'] = score_df['ratings_count'] / score_df['ratings_count'].max()
+
+									# Grouping by title, author, and genres to merge duplicates and aggregate scores
+									score_df = score_df.groupby(['title', 'author', 'genres'], as_index=False).agg({
+										'avg_rating': 'mean',        # average rating if duplicates exist
+										'ratings_count': 'sum',      # sum ratings counts (assuming counts add up)
+										'similarity_score': 'mean'   # average similarity score
+									})
+
+									#trying to extract genres for the input book
+									try:
+										input_genres_raw = books[books['title'].str.lower() == input.lower()]['genres'].iloc[0]
+										# Handle case where genres are stored as comma-separated string
+										input_genres = [g.strip().lower() for g in input_genres_raw.split(',')] if isinstance(input_genres_raw, str) else []
+									except:
+										input_genres = []
+
+									#Definining fictionality keyword sets 
+									nonfiction_keywords = {'nonfiction', 'non-fiction', 'biography', 'memoir', 'self-help', 'education', 'how to', 'autobiography'}
+									fiction_keywords = {'fiction', 'novel', 'fantasy', 'romance', 'thriller', 'mystery', 'young adult', 'ya', 'sci-fi', 'drama'}
+
+									#Creating helper function to classify genres as fiction, nonfiction, or neutral
+									def get_fictionality(genres):
+										genres_lower = [g.strip().lower() for g in genres]
+										if any(g in nonfiction_keywords for g in genres_lower):
+											return 'nonfiction'
+										if any(g in fiction_keywords for g in genres_lower):
+											return 'fiction'
+										return 'neutral'
+
+									# Determininig the fictionality of the input book
+									input_fictionality = get_fictionality(input_genres)
+
+									#Filtering books by matching fictionality
+
+									def filter_by_fictionality(book_genres):
+									    #base case
+										if not isinstance(book_genres, str):
+											return False  #skip if genres are missing or not a string
+										genres = [g.strip().lower() for g in book_genres.split(',')]
+										return get_fictionality(genres) == input_fictionality
+
+									#Applying the filter only if input book is classified as fiction or nonfiction
+									if input_fictionality in ['fiction', 'nonfiction']:
+										score_df = score_df[score_df['genres'].apply(filter_by_fictionality)]
+
+									#Calculating the final combined score
+									score_df['final_score'] = (
+										(score_df['similarity_score'] * 0.5) +              
+										(score_df['avg_rating'] / 5 * 0.3) +                
+										(score_df['ratings_count'] * 0.2)                    
+									)
+
+									#Sorting it by final score 
+									top_books = score_df.sort_values('final_score', ascending=False).head(top_n)
+
+									return top_books[['title', 'author', 'genres', 'avg_rating']]
+							  </code></pre>
+					</h4>
+				  </section>
+				  <section  data-auto-animate>
+					<h3 style="font-family: Times New Roman; color: rgb(53, 2, 2); font-size: 70px;"><b>Web Application</b></h3>
+				  </section>
+				   <section  data-auto-animate>
+					<h3 style="font-family: Times New Roman; color: rgb(53, 2, 2); font-size: 70px;"><b>Web Application</b></h3>
+					<h4 style="font-family: Times New Roman; color: rgb(128, 76, 8); font-size: 30px; line-height: 1.5;">
+						<p class="fragment"><a href="https://huggingface.co/spaces/fairuz-humaira82/TaleOrd-recommender">TaleOrd</a></p>
+					</h4>
+				   </section>
+				  <section  data-auto-animate>
+					<h3 style="font-family: Times New Roman; color: rgb(53, 2, 2); font-size: 70px;"><b>Future Implimentations</b></h3>
+				  </section>
+				  <section  data-auto-animate>
+					<h3 style="font-family: Times New Roman; color: rgb(53, 2, 2); font-size: 70px;"><b>Future Implimentations</b></h3>
+					<h4 style="font-family: Times New Roman; color: rgb(128, 76, 8); font-size: 30px; line-height: 1.5;">
+						<ul>
+							<li class="fragment"><b>Integrating this with NLP to get more accuracy</b></li>
+							<li class="fragment"><b>Implimenting Chat system along with the chatbot UI</b></li>
+							<li class="fragment"><b>Introducing preference profiling for the model to<br> improve suggestions based on behaviour.</b></li>
+						</ul>
+					</h4>
+				  </section>
+				  <section  data-auto-animate>
+					<h3 style="font-family: Times New Roman; color: rgb(53, 2, 2); font-size: 70px;"><b>Conclusion</b></h3>
+				  </section>
+				  <section  data-auto-animate>
+					<h3 style="font-family: Times New Roman; color: rgb(53, 2, 2); font-size: 70px;"><b>Conclusion</b></h3>
+					<h4 style="font-family: Times New Roman; color: rgb(128, 76, 8); font-size: 30px; line-height: 1.5;">
+						<p class="fragment">
+                          TaleOrd turns your favourite reads into a gateway for discovering new ones,<br>
+						  ensuring every recommendation aligns with your personal taste.<br>
+						  Let your next great read find you.
+						</p>
+					</h4>
+				  </section>
+				</section>
+			<section >
+					<h3 style="font-family: Times New Roman; color: rgb(128, 76, 8); font-size: 70px;"><b>Any Questions?</b></h3>
+			</section>
+			<section>
+					<h4 style="font-family: Times New Roman; color: rgb(128, 76, 8); font-size: 70px;">
+						Thank you for your attention!
+					</h4>
+			</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+				slideNumber: true,
+				autoAnimate: true,
+				
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
